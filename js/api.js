@@ -1,3 +1,4 @@
+
 import * as UI from './interfaz.js'
 
 class API {
@@ -13,27 +14,28 @@ class API {
         try {
             const respuesta = await fetch(url);
             const resultado = await respuesta.json();
+
             const { lyrics } = resultado
             if (lyrics) {
                 UI.divResultado.textContent = lyrics
                 UI.headingResultado.textContent = `Cancion ${this.cancion.toUpperCase()} de ${this.artista.toUpperCase()}`
             } else {
-                UI.divMensajes.textContent = 'Cancion no Encontrada'
-                UI.divMensajes.classList.add('error')
-                UI.divResultado.textContent = ' '
-                setTimeout(() => {
-                    UI.divMensajes.textContent = ' '
-                    UI.divMensajes.classList.remove('error')
-                }, 3000);
+                throw new Error('Cancion no encontrada')
             }
         } catch (error) {
-            console.log(error);
+            UI.divMensajes.textContent = error
+            UI.divMensajes.classList.add('error')
+            UI.divResultado.textContent = ' '
+            setTimeout(() => {
+                UI.divMensajes.textContent = ' '
+                UI.divMensajes.classList.remove('error')
+            }, 3000);
+            console.error('Error del Catch: ', error);
+        } finally {
+            UI.divResultado.textContent = ' '
+
         }
-
     }
-
-
-    //Ver funcionamiento del try/catch ---> Especificamente del catch por culpa de Franco
 
 
 
